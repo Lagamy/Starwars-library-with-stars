@@ -21,10 +21,6 @@ const Stars = ({ Loading, Class }) => {
       const middleground = document.querySelector('.middleground-stars');
       //console.log(middleground)
       middleground.style.setProperty('--translateY', `${window.scrollY * 0.3}px`);
-      if (!foreground || !middleground) {
-        console.error("Elements not found");
-        return;
-      }
     }
     window.addEventListener('scroll', handleParalax)
     window.addEventListener('resize', handleResize)
@@ -63,6 +59,7 @@ const Stars = ({ Loading, Class }) => {
         const left = Math.random() * pageWidth;
         const color = colorPicker(); // Pick a random color
         boxShadowArray.push(`${left}px ${top}px ${color}`);
+        boxShadowArray.push(`${left}px ${top}px 50px 8px ${color}`)
         lowestStarLocation = document.documentElement.scrollHeight;
       }
       starsContainer.current.style.boxShadow = boxShadowArray.join(", ");
