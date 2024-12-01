@@ -43,30 +43,23 @@ div
   position: absolute;
   top: 0;
   left: 0;
-  /* animation: twinkle 3s infinite alternate; */
 }
 
 
 .foreground-stars {
   transform: translate3d(0px, var(--translateY, 0px), 0) !important;
   z-index: 3;
-  width: 4px;
-  height: 4px;
   transition: transform 0.2s ease-out;
 }
 
 .middleground-stars {
   transform: translate3d(0px, var(--translateY, 0px), 0) !important;
   z-index: 2;
-  width: 3px;
-  height: 3px;
   transition: transform 0.2s ease-out;
 }
 
 .background-stars {
   z-index: 1;
-  width: 2px;
-  height: 2px;
 }
 
 
