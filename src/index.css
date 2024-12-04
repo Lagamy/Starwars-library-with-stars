@@ -49,7 +49,7 @@ div
 .middleground-stars {
   transform: translate3d(0px, var(--translateY, 0px), 0) !important;
   z-index: 2;
-  /* transition: transform 0.2s ease-out; */
+  /* */
 }
 
 .star{

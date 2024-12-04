@@ -32,9 +32,9 @@ if (error) return <div>Error: {error}</div>;
 
 return (
 <div><h1 className="logo">Starnavi</h1>
-<Stars Loading={loading} Class={"background-stars"} Size={2} paralaxSpeed={0}/>
-<Stars Loading={loading} Class={"middleground-stars"} Size={3} paralaxSpeed={0.3}/>
-<Stars Loading={loading} Class={"foreground-stars"} Size={4} paralaxSpeed={0.6}/>
+<Stars Loading={loading} Class={"background-stars"} Size={2} paralaxSpeed={0} Amount={1500}/>
+<Stars Loading={loading} Class={"middleground-stars"} Size={3} paralaxSpeed={0.3}  Amount={1000}/>
+<Stars Loading={loading} Class={"foreground-stars"} Size={4} paralaxSpeed={0.6} Amount={1000}/>
 <div className="cards">
   {characters.map(character => (
     <Card key={character.id}>

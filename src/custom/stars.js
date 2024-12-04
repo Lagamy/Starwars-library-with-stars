@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-const Stars = ({ Loading, Class, Size, paralaxSpeed }) => {
+const Stars = ({ Loading, Class, Amount, Size, paralaxSpeed }) => {
   let starsContainer = useRef(null); // Reference to the stars container
-  let stars = null;  // Store star positions and colors
-  let visibleStars;
+  let stars = new Set();  // Store star positions and colors
+  let visibleStars = new Set();
   let lowestStarLocation = 0 // due to infinite scroll - I need to generate new set of stars downwards from lowest star, avoiding double "staring" area. 
-  
+  let debounceTimeout;
+  let screenBuffer = 0;
+
   useEffect(() => {
     function handleResize() {
       starsContainer.current.style.boxShadow = "";
@@ -16,7 +18,11 @@ const Stars = ({ Loading, Class, Size, paralaxSpeed }) => {
     function handleParalax()
     {
       let paralax = window.scrollY * paralaxSpeed
-      updateVisibleStars(paralax);
+          // Debounce the updateVisibleStars call
+      //clearTimeout(debounceTimeout);
+      //debounceTimeout = setTimeout(() => {
+          updateVisibleStars(paralax);
+      //}, 100); // Adjust debounce delay as needed (100ms here)
     
       starsContainer.current.style.setProperty('--translateY', `${paralax}px`);
     }
@@ -39,12 +45,6 @@ const Stars = ({ Loading, Class, Size, paralaxSpeed }) => {
 
     return () => clearTimeout(timeoutId);
   }, [Loading]);
-
-
-
-  useEffect(() => {
-
-  })
 
   // const generateStars = (pageWidth) => {
   //   if(!Loading) {
@@ -74,18 +74,15 @@ const Stars = ({ Loading, Class, Size, paralaxSpeed }) => {
     if (starsContainer.current && lowestStarLocation === 0) {
         starsContainer.current.innerHTML = "";
     }
-    const numberStars = 2000;
     const availableHeight = document.documentElement.scrollHeight - lowestStarLocation;
     let id = 1;
-    const newStars = [];
-    for (let i = 0; i < numberStars; i++) {
+    for (let i = 0; i < Amount; i++) {
       const top = Math.random() * availableHeight;
       const left = Math.random() * pageWidth;
       const color = colorPicker();
-      newStars.push({ top, left, color, id });
+      stars.add({ top, left, color, id });
       id++;
     }
-    stars = newStars;
     initializeVisibleStars();
   }
 }
@@ -98,23 +95,26 @@ const initializeVisibleStars = () => {
     const viewportBottom = viewportTop + window.innerHeight;
 
     // Filter for stars in the viewport
-    visibleStars = stars.filter(
-      (star) => star.top >= viewportTop && star.top <= viewportBottom
-    );
-    visibleStars.forEach(({ top, left, color, id }) => {
-      const star = document.createElement('div');
-      star.classList.add('star');
-      star.style.top = `${top}px`;
-      star.style.left = `${left}px`;
-      star.style.width = `${Size}px`;
-      star.style.height = `${Size}px`;
-      star.style.backgroundColor = `${color}`;
-      star.style.boxShadow = `0px 0px 50px 10px ${color}`;
-      star.style.borderRadius = `0px`;
-      star.style.animationDelay = `${Math.random() * 5}s`;
-      star.style.animationDuration = `${Math.random() * 5}s`;
-      star.dataset.id = id;
-      starsContainer.current.appendChild(star);
+    stars.forEach(star => {
+      if (star.top >= viewportTop - screenBuffer && star.top <= viewportBottom + screenBuffer) {
+        visibleStars.add(star);
+      }
+    });
+
+    visibleStars.forEach((star) => {
+      const Star = document.createElement('div');
+      Star.classList.add('star');
+      Star.style.top = `${star.top}px`;
+      Star.style.left = `${star.left}px`;
+      Star.style.width = `${Size}px`;
+      Star.style.height = `${Size}px`;
+      Star.style.backgroundColor = `${star.color}`;
+      Star.style.boxShadow = `0px 0px 70px 12px ${star.color}`;
+      Star.style.borderRadius = `0px`;
+      Star.style.animationDelay = `${Math.random() * 5}s`;
+      Star.style.animationDuration = `${Math.random() * 5}s`;
+      Star.dataset.id = star.id;
+      starsContainer.current.appendChild(Star);
     });
 }
 
@@ -122,14 +122,17 @@ const updateVisibleStars = (paralax) => {
   const viewportTop = window.scrollY;
   const viewportBottom = viewportTop + window.innerHeight;
   console.log(paralax)
-  let currentVisibleStars = stars.filter(
-    (star) => star.top + paralax >= viewportTop && star.top + paralax <= viewportBottom// add paralax changes here
-  );
+  let currentVisibleStars = new Set();
+  stars.forEach(star => {
+    if (star.top + paralax >= viewportTop - screenBuffer && star.top + paralax <= viewportBottom + screenBuffer) {
+        currentVisibleStars.add(star);
+    }
+  });
 
-  visibleStars.forEach(({ top, left, color, id }) => {
-    if (!contains(currentVisibleStars, id))
+  visibleStars.forEach((star) => {
+    if (!currentVisibleStars.has(star))
     {
-      const starElement = document.querySelector(`[data-id="${id}"]`);
+      const starElement = document.querySelector(`[data-id="${star.id}"]`);
       if (starElement) {
         //console.log(starElement)
         starElement.remove();
@@ -138,22 +141,22 @@ const updateVisibleStars = (paralax) => {
   });
 
 
-  currentVisibleStars.forEach(({ top, left, color, id }) => {
-    if (!contains(visibleStars, id))
+  currentVisibleStars.forEach((star) => {
+    if (!visibleStars.has(star))
     {
-      const star = document.createElement('div');
-      star.classList.add('star');
-      star.style.top = `${top}px`;
-      star.style.left = `${left}px`;
-      star.style.width = `${Size}px`;
-      star.style.height = `${Size}px`;
-      star.style.backgroundColor = `${color}`;
-      star.style.boxShadow = `0px 0px 50px 8px ${color}`;
-      star.style.borderRadius = `0px`;
-      star.style.animationDelay = `${Math.random() * 5}s`;
-      star.style.animationDuration = `${Math.random() * 5}s`;
-      star.dataset.id = id; // Store top as data attribute
-      starsContainer.current.appendChild(star);
+      const Star = document.createElement('div');
+      Star.classList.add('star');
+      Star.style.top = `${star.top}px`;
+      Star.style.left = `${star.left}px`;
+      Star.style.width = `${Size}px`;
+      Star.style.height = `${Size}px`;
+      Star.style.backgroundColor = `${star.color}`;
+      Star.style.boxShadow = `0px 0px 70px 12px ${star.color}`;
+      Star.style.borderRadius = `0px`;
+      Star.style.animationDelay = `${Math.random() * 5}s`;
+      Star.style.animationDuration = `${Math.random() * 5}s`;
+      Star.dataset.id = star.id; // Store id as data attribute
+      starsContainer.current.appendChild(Star);
     }
   });
   visibleStars = currentVisibleStars;
