@@ -5,12 +5,10 @@ const Stars = ({ Loading, Class, Amount, Size, paralaxSpeed }) => {
   let stars = new Set();  // Store star positions and colors
   let visibleStars = new Set();
   let lowestStarLocation = 0 // due to infinite scroll - I need to generate new set of stars downwards from lowest star, avoiding double "staring" area. 
-  let debounceTimeout;
-  let screenBuffer = 0;
+  let screenBuffer = 50;
 
   useEffect(() => {
     function handleResize() {
-      starsContainer.current.style.boxShadow = "";
       lowestStarLocation = 0;
       generateStars(document.documentElement.scrollWidth);
     }
@@ -71,8 +69,9 @@ const Stars = ({ Loading, Class, Amount, Size, paralaxSpeed }) => {
   const generateStars = (pageWidth) => {
   if(!Loading) {
     // clear any existing stars
-    if (starsContainer.current && lowestStarLocation === 0) {
-        starsContainer.current.innerHTML = "";
+    if (lowestStarLocation === 0) {
+      stars = new Set();
+      starsContainer.current.innerHTML = "";
     }
     const availableHeight = document.documentElement.scrollHeight - lowestStarLocation;
     let id = 1;
@@ -124,7 +123,7 @@ const updateVisibleStars = (paralax) => {
   console.log(paralax)
   let currentVisibleStars = new Set();
   stars.forEach(star => {
-    if (star.top + paralax >= viewportTop - screenBuffer && star.top + paralax <= viewportBottom + screenBuffer) {
+    if (star.top + paralax >= viewportTop - screenBuffer && star.top - paralax <= viewportBottom + screenBuffer) {
         currentVisibleStars.add(star);
     }
   });

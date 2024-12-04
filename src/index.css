@@ -34,6 +34,7 @@ div
 
 
 .stars{
+  transform: translate3d(0px, var(--translateY, 0px), 0) !important;
   position: absolute;
   top: 0;
   left: 0;
@@ -41,13 +42,11 @@ div
 
 
 .foreground-stars {
-  transform: translate3d(0px, var(--translateY, 0px), 0) !important;
   z-index: 3;
   /* transition: transform 0.2s ease-out; */
 }
 
 .middleground-stars {
-  transform: translate3d(0px, var(--translateY, 0px), 0) !important;
   z-index: 2;
   /* */
 }
