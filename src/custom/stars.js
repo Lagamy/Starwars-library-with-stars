@@ -108,7 +108,7 @@ const initializeVisibleStars = () => {
       Star.style.width = `${Size}px`;
       Star.style.height = `${Size}px`;
       Star.style.backgroundColor = `${star.color}`;
-      Star.style.boxShadow = `0px 0px 70px 12px ${star.color}`;
+      Star.style.boxShadow = `0px 0px 90px 17px ${star.color}`;
       Star.style.borderRadius = `0px`;
       Star.style.animationDelay = `${Math.random() * 5}s`;
       Star.style.animationDuration = `${Math.random() * 5}s`;
@@ -150,7 +150,7 @@ const updateVisibleStars = (paralax) => {
       Star.style.width = `${Size}px`;
       Star.style.height = `${Size}px`;
       Star.style.backgroundColor = `${star.color}`;
-      Star.style.boxShadow = `0px 0px 70px 12px ${star.color}`;
+      Star.style.boxShadow = `0px 0px 90px 17px ${star.color}`;
       Star.style.borderRadius = `0px`;
       Star.style.animationDelay = `${Math.random() * 5}s`;
       Star.style.animationDuration = `${Math.random() * 5}s`;
