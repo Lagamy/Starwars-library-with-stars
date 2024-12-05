@@ -40,6 +40,17 @@ div
   left: 0;
 }
 
+.Character-img{
+  width: 85%;
+  height: 100%;
+  border-radius: 100%;
+  border: 1px white;
+  background-color: white;
+  background-size: cover;
+  /* background-position: center -10px; */
+  align-self: center !important;
+  background-repeat: no-repeat;
+}
 
 .foreground-stars {
   z-index: 3;
@@ -104,22 +115,23 @@ div
   border-radius: 10% !important;
   justify-self: center;
   z-index: 5 !important;
-  color: white !important;
+  color: yellow !important;
   border-radius: 10px;
-  border: 1px solid white !important;; 
+  border: 1px solid rgba(255, 255, 255, 0) !important;; 
   background-color: transparent !important;
   margin-top: 40px;
-  width: 30rem;
+  width: 35rem;
+  height: 35rem !important;
 }
 
 .card:hover{
   z-index: 5 !important;
   background-color: transparent !important;
-  color: white !important;
-  border-color: white  !important;
+  color: yellow !important;
+  border-color: yellow  !important;
   border-width: 0.1px !important;
-  text-shadow: 0 0 2px white, 0 0 5px white, 0 0 10px white;
-  box-shadow: inset 0 0 15px white, 0 0 2px white, 0 0 2px white, 0 0 15px white !important;
+  text-shadow: 0 0 2px yellow, 0 0 5px yellow, 0 0 5px yellow;
+  box-shadow: inset 0 0 3px yellow, 0 0 2px yellow, 0 0 2px yellow, 0 0 3px yellow !important;
 }
 
 .card-img-top
