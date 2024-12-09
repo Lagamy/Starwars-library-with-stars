@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 
-const Stars = ({ Loading, Class, Amount, Size, paralaxSpeed }) => {
+const Stars = ({ Loading, Class, Weight, Size, paralaxSpeed }) => {
   let starsContainer = useRef(null); // Reference to the stars container
   let stars = new Set();  // Store star positions and colors
   let visibleStars = new Set();
@@ -68,6 +68,7 @@ const Stars = ({ Loading, Class, Amount, Size, paralaxSpeed }) => {
 
   const generateStars = (pageWidth) => {
   if(!Loading) {
+    let Amount = Math.min(Weight * window.innerWidth * window.innerHeight, 1000);
     // clear any existing stars
     if (lowestStarLocation === 0) {
       stars = new Set();
@@ -82,6 +83,7 @@ const Stars = ({ Loading, Class, Amount, Size, paralaxSpeed }) => {
       stars.add({ top, left, color, id });
       id++;
     }
+    console.log("initial size: " + stars.size)
     initializeVisibleStars();
   }
 }
