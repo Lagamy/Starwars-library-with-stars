@@ -25,7 +25,31 @@ export default function App() {
 
 useEffect(() => {
   fetchCharacters();
+
+  function handleResize() {
+    setBackgroundSize();
+  }
+  window.addEventListener('resize', handleResize)
+
+  // Clean up on component unmount
+  return () => { 
+    window.removeEventListener('resize', handleResize);
+  }
 }, []); 
+
+// After 
+useEffect( () => {
+    if(!loading) 
+    {
+      setBackgroundSize();
+    }
+}, [loading]);
+
+function setBackgroundSize() {
+  const background = document.querySelector('.background-container');
+  background.style.setProperty('--pageHeight', '0px'); // Reset first
+  background.style.setProperty('--pageHeight', `${document.body.scrollHeight}px`);
+}
 
 if (loading) return <div>Loading...</div>;
 if (error) return <div>Error: {error}</div>;
@@ -33,9 +57,11 @@ if (error) return <div>Error: {error}</div>;
 return (
 <div><h1 className="logo">Starnavi</h1>
 {/* Weight - chance for star to spawn per pixel */}
-<Stars Loading={loading} Class={"background-stars"} Size={2.5} paralaxSpeed={0.6} Weight={0.00033}/> 
-<Stars Loading={loading} Class={"middleground-stars"} Size={3.5} paralaxSpeed={0.3}  Weight={0.00055}/>
-<Stars Loading={loading} Class={"foreground-stars"} Size={5} paralaxSpeed={0} Weight={0.00025}/>
+<div Class={"background-container"}> 
+  <Stars Loading={loading} Class={"background-stars"} Size={2.5} paralaxSpeed={0.6} Weight={0.00033}/> 
+  <Stars Loading={loading} Class={"middleground-stars"} Size={3.5} paralaxSpeed={0.3}  Weight={0.00055}/>
+  <Stars Loading={loading} Class={"foreground-stars"} Size={5} paralaxSpeed={0} Weight={0.00025}/>
+</div>
 <div className="cards">
   {characters.map(character => (
     <Card key={character.id}>

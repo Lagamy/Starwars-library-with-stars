@@ -32,12 +32,20 @@ div
   align-items: center !important;
 }
 
-
-.stars{
-  transform: translate3d(0px, var(--translateY, 0px), 0) !important;
-  position: absolute;
+.background-container{
+  position: absolute !important;
+  width: 100vw;
+  height: var(--pageHeight) !important;
+  overflow: hidden;
   top: 0;
   left: 0;
+}
+.stars{
+  position: absolute !important;
+  transform: translate3d(0px, var(--translateY, 0px), 0) !important;
+  top: 0;
+  left: 0;
+  
 }
 
 .Character-img{
@@ -63,7 +71,7 @@ div
 }
 
 .star{
-  position: absolute;
+  position: absolute !important;
   border-radius: 50%;
   animation: twinkle 5s infinite alternate;
 }

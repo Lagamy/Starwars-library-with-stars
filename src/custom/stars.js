@@ -5,7 +5,7 @@ const Stars = ({ Loading, Class, Weight, Size, paralaxSpeed }) => {
   let stars = new Set();  // Store star positions and colors
   let visibleStars = new Set();
   let lowestStarLocation = 0 // due to infinite scroll - I need to generate new set of stars downwards from lowest star, avoiding double "staring" area. 
-  let screenBuffer = 50;
+  let screenBuffer = 0;
 
   useEffect(() => {
     function handleResize() {
@@ -36,6 +36,7 @@ const Stars = ({ Loading, Class, Weight, Size, paralaxSpeed }) => {
   }, []);
 
   useEffect(() => {
+    
     // wait till card pictures are loaded
     const timeoutId = setTimeout(() => {
       generateStars(document.documentElement.scrollWidth);
@@ -68,7 +69,8 @@ const Stars = ({ Loading, Class, Weight, Size, paralaxSpeed }) => {
 
   const generateStars = (pageWidth) => {
   if(!Loading) {
-    let Amount = Math.min(Weight * window.innerWidth * window.innerHeight, 1000);
+    let Amount = Math.min(Weight * window.innerWidth * window.innerHeight, 500);
+    console.log(Amount)
     // clear any existing stars
     if (lowestStarLocation === 0) {
       stars = new Set();
@@ -83,7 +85,6 @@ const Stars = ({ Loading, Class, Weight, Size, paralaxSpeed }) => {
       stars.add({ top, left, color, id });
       id++;
     }
-    console.log("initial size: " + stars.size)
     initializeVisibleStars();
   }
 }
@@ -91,6 +92,7 @@ const Stars = ({ Loading, Class, Weight, Size, paralaxSpeed }) => {
 
 
 const initializeVisibleStars = () => {
+    console.log("initializing")
     // clear any existing stars
     const viewportTop = window.scrollY;
     const viewportBottom = viewportTop + window.innerHeight;
@@ -122,8 +124,9 @@ const initializeVisibleStars = () => {
 const updateVisibleStars = (paralax) => {
   const viewportTop = window.scrollY;
   const viewportBottom = viewportTop + window.innerHeight;
-  console.log(paralax)
+  //console.log(paralax)
   let currentVisibleStars = new Set();
+  let a = 0;
   stars.forEach(star => {
     if (star.top + paralax >= viewportTop - screenBuffer && star.top - paralax <= viewportBottom + screenBuffer) {
         currentVisibleStars.add(star);
@@ -140,26 +143,24 @@ const updateVisibleStars = (paralax) => {
       }
     }
   });
-
-
-  currentVisibleStars.forEach((star) => {
-    if (!visibleStars.has(star))
-    {
-      const Star = document.createElement('div');
-      Star.classList.add('star');
-      Star.style.top = `${star.top}px`;
-      Star.style.left = `${star.left}px`;
-      Star.style.width = `${Size}px`;
-      Star.style.height = `${Size}px`;
-      Star.style.backgroundColor = `${star.color}`;
-      Star.style.boxShadow = `0px 0px 90px 17px ${star.color}`;
-      Star.style.borderRadius = `0px`;
-      Star.style.animationDelay = `${Math.random() * 5}s`;
-      Star.style.animationDuration = `${Math.random() * 5}s`;
-      Star.dataset.id = star.id; // Store id as data attribute
-      starsContainer.current.appendChild(Star);
-    }
-  });
+  // currentVisibleStars.forEach((star) => {
+  //   if (!visibleStars.has(star))
+  //   {
+  //     const Star = document.createElement('div');
+  //     Star.classList.add('star');
+  //     Star.style.top = `${star.top}px`;
+  //     Star.style.left = `${star.left}px`;
+  //     Star.style.width = `${Size}px`;
+  //     Star.style.height = `${Size}px`;
+  //     Star.style.backgroundColor = `${star.color}`;
+  //     Star.style.boxShadow = `0px 0px 90px 17px ${star.color}`;
+  //     Star.style.borderRadius = `0px`;
+  //     Star.style.animationDelay = `${Math.random() * 5}s`;
+  //     Star.style.animationDuration = `${Math.random() * 5}s`;
+  //     Star.dataset.id = star.id; // Store id as data attribute
+  //     starsContainer.current.appendChild(Star);
+  //   }
+  // });
   visibleStars = currentVisibleStars;
 }
 
