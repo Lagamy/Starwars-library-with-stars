@@ -73,7 +73,7 @@ div
 .star{
   position: absolute !important;
   border-radius: 50%;
-  animation: twinkle 5s infinite alternate;
+  /* animation: twinkle 5s infinite alternate; */
 }
 
 .background-stars {
