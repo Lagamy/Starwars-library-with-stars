@@ -66,7 +66,6 @@ return (
   {characters.map(character => (
     <Card key={character.id}>
       <div className="Character-img" style={{backgroundImage: `url(https://starwars-visualguide.com/assets/img/characters/${character.id}.jpg)`}}/>
-
       {/* <Card.Img variant="top" src={`https://starwars-visualguide.com/assets/img/characters/${character.id}.jpg`} alt={character.name} /> */}
       <Card.Body>
         <Card.Title>{character.name}</Card.Title>

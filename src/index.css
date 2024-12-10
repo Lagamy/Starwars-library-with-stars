@@ -155,3 +155,12 @@ div
   gap: 20px;
   justify-items: center; /* Center items in each cell */
 }
+
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: transparent; 
+}
