@@ -39,10 +39,7 @@ useEffect(() => {
 
 // After 
 useEffect( () => {
-    if(!loading) 
-    {
-      setBackgroundSize();
-    }
+    if(!loading) setBackgroundSize();
 }, [loading]);
 
 function setBackgroundSize() {

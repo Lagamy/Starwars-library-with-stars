@@ -8,12 +8,13 @@ const Stars = ({ Loading, Class, Weight, Size, paralaxSpeed, SetId }) => {
   let screenBuffer = 50;
 
   useEffect(() => {
-    function handleResize() {
+
+    const handleResize = () => {
       lowestStarLocation = 0;
       generateStars(document.documentElement.scrollWidth);
     }
 
-    function handleParalax()
+    const handleParalax = () =>
     {
       let paralax = window.scrollY * paralaxSpeed
           // Debounce the updateVisibleStars call
@@ -24,6 +25,7 @@ const Stars = ({ Loading, Class, Weight, Size, paralaxSpeed, SetId }) => {
     
       starsContainer.current.style.setProperty('--translateY', `${paralax}px`);
     }
+
     window.addEventListener('scroll', handleParalax)
     window.addEventListener('resize', handleResize)
 
@@ -67,7 +69,7 @@ const Stars = ({ Loading, Class, Weight, Size, paralaxSpeed, SetId }) => {
   //   }
   // };
 
-  const generateStars = (pageWidth) => {
+function generateStars(pageWidth) {
   if(!Loading) {
     let Amount = Math.min(Weight * window.innerWidth * window.innerHeight, 500);
     console.log(Amount)
@@ -92,7 +94,7 @@ const Stars = ({ Loading, Class, Weight, Size, paralaxSpeed, SetId }) => {
 
 
 
-const initializeVisibleStars = () => {
+function initializeVisibleStars() {
     console.log("initializing")
     // clear any existing stars
     const viewportTop = window.scrollY;
@@ -122,7 +124,7 @@ const initializeVisibleStars = () => {
     });
 }
 
-const updateVisibleStars = (paralax) => {
+function updateVisibleStars(paralax) {
   const viewportTop = window.scrollY;
   const viewportBottom = viewportTop + window.innerHeight;
   //console.log(paralax)
@@ -166,16 +168,12 @@ const updateVisibleStars = (paralax) => {
   visibleStars = currentVisibleStars;
 }
 
-  return <div ref={starsContainer} className={`stars  ${Class}`}></div>;
-};
-
-
-const contains = (array, id) => {
+function contains(array, id) {
   return array.some((star) => star.id === id)
 }
 
 
-const colorPicker = () => {
+function colorPicker() {
     const randNum = Math.floor(Math.random() * 3) + 1; // random integer between 1 and 3
     switch (randNum) {
         case 1: return 'white';
@@ -183,4 +181,8 @@ const colorPicker = () => {
         case 3: return 'cyan';
     }
 };
+
+  return <div ref={starsContainer} className={`stars  ${Class}`}></div>;
+};
+
 export default Stars;
