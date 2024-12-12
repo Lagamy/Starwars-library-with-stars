@@ -69,15 +69,15 @@ const Stars = ({ Loading, Class, Weight, Size, paralaxSpeed, SetId }) => {
 
   const generateStars = (pageWidth) => {
   if(!Loading) {
-    let Amount = Math.min(Weight * window.innerWidth * window.innerHeight, 700);
+    let Amount = Math.min(Weight * window.innerWidth * window.innerHeight, 500);
     console.log(Amount)
     // clear any existing stars
     if (lowestStarLocation === 0) {
       stars = new Set();
+      visibleStars = new Set();
       starsContainer.current.innerHTML = "";
     }
     const availableHeight = document.documentElement.scrollHeight - lowestStarLocation;
-    let i = 1;
     let id;
     for (let i = 0; i < Amount; i++) {
       const top = Math.random() * availableHeight;
@@ -85,7 +85,6 @@ const Stars = ({ Loading, Class, Weight, Size, paralaxSpeed, SetId }) => {
       const color = colorPicker();
       id = SetId + '.' + i
       stars.add({ top, left, color, id });
-      i++;
     }
     initializeVisibleStars();
   }
