@@ -10,7 +10,7 @@ const Stars = ({ Loading, Class, Weight, Size, paralaxSpeed, SetId }) => {
   useEffect(() => {
 
     const handleResize = () => {
-      lowestStarLocation = 0;
+      //lowestStarLocation = 0;
       generateStars(document.documentElement.scrollWidth);
     }
 
@@ -38,7 +38,6 @@ const Stars = ({ Loading, Class, Weight, Size, paralaxSpeed, SetId }) => {
   }, []);
 
   useEffect(() => {
-    
     // wait till card pictures are loaded
     const timeoutId = setTimeout(() => {
       generateStars(document.documentElement.scrollWidth);
@@ -74,11 +73,9 @@ function generateStars(pageWidth) {
     let Amount = Math.min(Weight * window.innerWidth * window.innerHeight, 500);
     console.log(Amount)
     // clear any existing stars
-    if (lowestStarLocation === 0) {
-      stars = new Set();
-      visibleStars = new Set();
-      starsContainer.current.innerHTML = "";
-    }
+    stars = new Set();
+    visibleStars = new Set();
+    starsContainer.current.innerHTML = "";
     const availableHeight = document.documentElement.scrollHeight - lowestStarLocation;
     let id;
     for (let i = 0; i < Amount; i++) {
@@ -95,7 +92,6 @@ function generateStars(pageWidth) {
 
 
 function initializeVisibleStars() {
-    console.log("initializing")
     // clear any existing stars
     const viewportTop = window.scrollY;
     const viewportBottom = viewportTop + window.innerHeight;

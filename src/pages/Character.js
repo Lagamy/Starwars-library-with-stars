@@ -32,31 +32,42 @@ useEffect(() => {
 
 
 useEffect(() => {
-  if(character != null) {
-    fetchDataRelatedToCharacter(setFilms, setError, character.films)
-    fetchDataRelatedToCharacter(setStarships, setError, character.starships)
-    setLoading(false);
-  }
+  const fetchAllData = async () => {
+    if (character != null) {
+      try {
+        await fetchDataRelatedToCharacter(setFilms, setError, character.films);
+        await fetchDataRelatedToCharacter(setStarships, setError, character.starships);
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+      } finally {
+        setLoading(false); // Set loading to false only after all async calls finish
+      }
+    }
+  };
+
+  fetchAllData();
 }, [character]);
 
 
 useEffect(() => {
   if(!loading) {
   let characterNode = createNodeFromCharacter(character);
-
+  console.log(films)
   let filmNodes = createNodesFromFilms(characterNode, films);
   let filmEdges = createEdgesFromOneToMany(characterNode, filmNodes, characterNode.data.strokeColor, false);
   
-  let starshipNodes = [];
-  let starshipEdges = [];
+  let starshipNodes;
+  let starshipEdges;
 
   filmNodes.forEach(filmNode => {
-    starshipNodes = createNodesFromStarships(characterNode, filmNode, starships);
-    starshipEdges = createEdgesFromOneToMany(filmNode, starshipNodes, characterNode.data.strokeColor, true);
+    starshipNodes = [starshipNodes, ...createNodesFromStarships(filmNode, starships)];
+    starshipEdges = [starshipEdges, ...createEdgesFromOneToMany(filmNode, starshipNodes, characterNode.data.strokeColor, true)];
   });
 
   let allNodes = [characterNode, ...filmNodes, ...starshipNodes];
   let allEdges = [...filmEdges, ...starshipEdges];
+
+  //console.log(allNodes);
   setNodes(allNodes);
   setEdges(allEdges);
   }
@@ -73,6 +84,7 @@ if (error) return <div>Error: {error}</div>;
 
 return (
     // <div></div>
+    <div style={{ height: '100vh', width: '100vw'}}>
     <ReactFlow
       nodes={nodes}
       onNodesChange={onNodesChange}
@@ -82,5 +94,6 @@ return (
       fitView
     >
     </ReactFlow>
+    </div>
   );
 }

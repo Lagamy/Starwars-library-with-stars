@@ -69,7 +69,7 @@ const canvasHeight = 15000; // maximum height of the canvas
 
 
     export const createNodeFromCharacter = (character) => {
-        console.log(character);
+        // console.log(character);
         let BorderColor = colorDecider(character.skin_color, character.hair_color);
         BorderColor = colorTranslator(BorderColor);
         let TextColor = eyeColorTranslator(character.eye_color);
@@ -91,7 +91,8 @@ const canvasHeight = 15000; // maximum height of the canvas
         // randomised distance between character and his films. Purely visual
         const arraySize = films.length;
         return films.map((film, index) => ({ 
-            id: `film-${film.id}${characterNode.id}`, 
+            
+            id: film.url, 
             sourcePosition: 'right',
             targetPosition: 'left',
             position: { x: characterNode.position.x + Math.floor(Math.random() * (max - min + 1)) + min, y: characterNode.position.y - arraySize * 40 + index * 140 }, 
@@ -101,7 +102,8 @@ const canvasHeight = 15000; // maximum height of the canvas
 
 
     export const createNodesFromStarships = (filmNode, starships) => {
-        const filteredStarships = starships.filter(starship => filmNode.data.starships.includes(starship.id))
+        
+        const filteredStarships = starships.filter(starship => filmNode.data.starships.includes(starship.url));
         const arraySize = filteredStarships.length;
         if(arraySize == 0)
         {
@@ -117,4 +119,4 @@ const canvasHeight = 15000; // maximum height of the canvas
         }));
     };
 
-export default { createGroupNodes, createNodesFromFilms, createNodesFromStarships };
+export default { createNodeFromCharacter, createNodesFromFilms, createNodesFromStarships };

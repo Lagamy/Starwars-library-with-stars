@@ -1,6 +1,6 @@
 export const createEdgesFromOneToMany = (source, targets, color, animated) => {
     const edges = [];
-    
+    if(targets != null) {
     targets.forEach( target => {
         edges.push({
             id: `edge-${source.id}-${target.id}`,
@@ -10,5 +10,6 @@ export const createEdgesFromOneToMany = (source, targets, color, animated) => {
             style: {stroke: color}
           });
     });
+}
     return edges;
 };

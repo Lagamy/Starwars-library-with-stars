@@ -40,9 +40,9 @@ useEffect(() => {
 }, []); 
 
 // After 
-// useEffect( () => {
-//     if(!loading) setBackgroundSize();
-// }, [loading]);
+useEffect( () => {
+    if(!loading) setBackgroundSize();
+}, [loading]);
 
 function setBackgroundSize() {
   const background = document.querySelector('.background-container');
@@ -52,8 +52,8 @@ function setBackgroundSize() {
 
 function slugifyWithAccents(name) {
   return name
-    .normalize('NFD') // Normalize diacritics
-    .replace(/[\u0300-\u036f]/g, '') // Remove diacritic marks
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
     .toLowerCase()
     .trim()
     .replace(/[\s\W-]+/g, '-')
