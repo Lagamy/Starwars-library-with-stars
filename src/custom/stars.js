@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 
-const Stars = ({ Loading, Class, Weight, Size, paralaxSpeed, SetId }) => {
+const Stars = ({ Loading, Class, Weight, Size, paralaxSpeed, SetId, IgnoreScroll }) => {
   let starsContainer = useRef(null); // Reference to the stars container
   let stars = new Set();  // Store star positions and colors
   let visibleStars = new Set();
@@ -20,7 +20,7 @@ const Stars = ({ Loading, Class, Weight, Size, paralaxSpeed, SetId }) => {
           // Debounce the updateVisibleStars call
       //clearTimeout(debounceTimeout);
       //debounceTimeout = setTimeout(() => {
-          updateVisibleStars(paralax);
+      if(!IgnoreScroll) updateVisibleStars(paralax);
       //}, 100); // Adjust debounce delay as needed (100ms here)
     
       starsContainer.current.style.setProperty('--translateY', `${paralax}px`);
@@ -71,12 +71,13 @@ const Stars = ({ Loading, Class, Weight, Size, paralaxSpeed, SetId }) => {
 function generateStars(pageWidth) {
   if(!Loading) {
     let Amount = Math.min(Weight * window.innerWidth * window.innerHeight, 500);
-    console.log(Amount)
+    //console.log(Amount)
+    console.log(window.innerHeight);
     // clear any existing stars
     stars = new Set();
     visibleStars = new Set();
     starsContainer.current.innerHTML = "";
-    const availableHeight = document.documentElement.scrollHeight - lowestStarLocation;
+    const availableHeight = IgnoreScroll ? window.innerHeight : document.documentElement.scrollHeight;
     let id;
     for (let i = 0; i < Amount; i++) {
       const top = Math.random() * availableHeight;

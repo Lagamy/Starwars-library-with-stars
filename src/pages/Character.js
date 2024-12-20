@@ -4,6 +4,7 @@ import { Background, Controls, ReactFlow, addEdge, useNodesState, useEdgesState,
 import { fetchDataRelatedToCharacter } from '../api/fetchAPI';
 import { createNodeFromCharacter, createNodesFromFilms, createNodesFromStarships} from "../nodes/nodesMethods";
 import { createEdgesFromOneToMany } from "../edges/edgesMethods";
+import Stars from '../custom/stars';
 
 export default function Character() {
 
@@ -50,21 +51,27 @@ useEffect(() => {
 
 
 useEffect(() => {
+  
   if(!loading) {
+  let allNodes = [];
+
   let characterNode = createNodeFromCharacter(character);
+
   console.log(films)
   let filmNodes = createNodesFromFilms(characterNode, films);
   let filmEdges = createEdgesFromOneToMany(characterNode, filmNodes, characterNode.data.strokeColor, false);
   
-  let starshipNodes;
-  let starshipEdges;
+  allNodes = [characterNode, ...filmNodes];
+
+  let starshipNodes = [];
+  let starshipEdges = [];
 
   filmNodes.forEach(filmNode => {
-    starshipNodes = [starshipNodes, ...createNodesFromStarships(filmNode, starships)];
-    starshipEdges = [starshipEdges, ...createEdgesFromOneToMany(filmNode, starshipNodes, characterNode.data.strokeColor, true)];
+    starshipNodes = createNodesFromStarships(filmNode, starships);
+    starshipEdges = [...starshipEdges, ...createEdgesFromOneToMany(filmNode, starshipNodes, characterNode.data.strokeColor, true)];
+    allNodes = [...allNodes, ...starshipNodes];
   });
 
-  let allNodes = [characterNode, ...filmNodes, ...starshipNodes];
   let allEdges = [...filmEdges, ...starshipEdges];
 
   //console.log(allNodes);
@@ -85,6 +92,9 @@ if (error) return <div>Error: {error}</div>;
 return (
     // <div></div>
     <div style={{ height: '100vh', width: '100vw'}}>
+    <Stars Loading={loading} Class={"background-stars"} Size={2.5} paralaxSpeed={0.5} Weight={0.00001} SetId={'1'} IgnoreScroll={true}/> 
+    <Stars Loading={loading} Class={"middleground-stars"} Size={3.5} paralaxSpeed={0.3}  Weight={0.00001} SetId={'2'} IgnoreScroll={true}/>
+    <Stars Loading={loading} Class={"foreground-stars"} Size={5.5} paralaxSpeed={0.15} Weight={0.00001} SetId={'3'} IgnoreScroll={true}/>
     <ReactFlow
       nodes={nodes}
       onNodesChange={onNodesChange}

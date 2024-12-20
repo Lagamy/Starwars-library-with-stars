@@ -67,9 +67,9 @@ return (
 <div><h1 className="logo">Starnavi</h1>
 {/* Weight - chance for star to spawn per pixel */}
 <div Class={"background-container"}> 
-  <Stars Loading={loading} Class={"background-stars"} Size={2.5} paralaxSpeed={0.5} Weight={0.00044} SetId={'1'}/> 
-  <Stars Loading={loading} Class={"middleground-stars"} Size={3.5} paralaxSpeed={0.3}  Weight={0.0006} SetId={'2'}/>
-  <Stars Loading={loading} Class={"foreground-stars"} Size={5.5} paralaxSpeed={0.15} Weight={0.0003} SetId={'3'}/>
+  <Stars Loading={loading} Class={"background-stars"} Size={2.5} paralaxSpeed={0.5} Weight={0.00044} SetId={'1'} IgnoreScroll={false}/> 
+  <Stars Loading={loading} Class={"middleground-stars"} Size={3.5} paralaxSpeed={0.3}  Weight={0.0006} SetId={'2'} IgnoreScroll={false}/>
+  <Stars Loading={loading} Class={"foreground-stars"} Size={5.5} paralaxSpeed={0.15} Weight={0.0003} SetId={'3'} IgnoreScroll={false}/>
 </div>
 <div className="cards">
   {characters.map((character, index) => (

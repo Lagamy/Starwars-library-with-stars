@@ -111,7 +111,7 @@ const canvasHeight = 15000; // maximum height of the canvas
             return [];
         }
         return filteredStarships.map((starship, index) => ({ 
-            id: `starship-${starship.id}${filmNode.id}`, 
+            id:  filmNode.id + "-" + starship.url, 
             targetPosition: 'left',
             type: 'output',
             position: { x: filmNode.position.x + 300,  y: filmNode.position.y - arraySize * 20 + index * 80 }, 
