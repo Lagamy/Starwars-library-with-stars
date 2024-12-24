@@ -57,9 +57,13 @@ useEffect(() => {
 
   let characterNode = createNodeFromCharacter(character);
 
+  let filmNodes = [];
   console.log(films)
-  let filmNodes = createNodesFromFilms(characterNode, films);
-  let filmEdges = createEdgesFromOneToMany(characterNode, filmNodes, characterNode.data.strokeColor, false);
+  films.forEach((film, index) => {
+    filmNodes = [...filmNodes, createNodesFromFilms(characterNode, film, films.length, index)];
+  });
+
+  let filmEdges = createEdgesFromOneToMany(characterNode, filmNodes, false);
   
   allNodes = [characterNode, ...filmNodes];
 
@@ -68,7 +72,7 @@ useEffect(() => {
 
   filmNodes.forEach(filmNode => {
     starshipNodes = createNodesFromStarships(filmNode, starships);
-    starshipEdges = [...starshipEdges, ...createEdgesFromOneToMany(filmNode, starshipNodes, characterNode.data.strokeColor, true)];
+    starshipEdges = [...starshipEdges, ...createEdgesFromOneToMany(filmNode, starshipNodes, true)];
     allNodes = [...allNodes, ...starshipNodes];
   });
 
@@ -92,15 +96,20 @@ if (error) return <div>Error: {error}</div>;
 return (
     // <div></div>
     <div style={{ height: '100vh', width: '100vw'}}>
-    <Stars Loading={loading} Class={"background-stars"} Size={2.5} paralaxSpeed={0.5} Weight={0.00001} SetId={'1'} IgnoreScroll={true}/> 
-    <Stars Loading={loading} Class={"middleground-stars"} Size={3.5} paralaxSpeed={0.3}  Weight={0.00001} SetId={'2'} IgnoreScroll={true}/>
-    <Stars Loading={loading} Class={"foreground-stars"} Size={5.5} paralaxSpeed={0.15} Weight={0.00001} SetId={'3'} IgnoreScroll={true}/>
+    <Stars Loading={loading} Class={"background-stars"} Size={2.5} paralaxSpeed={0.5} Weight={80} SetId={'1'} IgnoreScroll={true} ReactFlow={true}/> 
+    <Stars Loading={loading} Class={"middleground-stars"} Size={3.5} paralaxSpeed={0.3}  Weight={80} SetId={'2'} IgnoreScroll={true} ReactFlow={true}/>
+    <Stars Loading={loading} Class={"foreground-stars"} Size={5.5} paralaxSpeed={0.15} Weight={80} SetId={'3'} IgnoreScroll={true} ReactFlow={true}/>
     <ReactFlow
       nodes={nodes}
       onNodesChange={onNodesChange}
       edges={edges}
       onEdgesChange={onEdgesChange}
       onConnect={onConnect}
+      panOnDrag={false}           // Prevent panning by dragging
+      panOnScroll={false}         // Prevent panning by scrolling
+      zoomOnScroll={false}        // Prevent zooming with scroll
+      zoomOnPinch={false}         // Prevent zooming with pinch
+      zoomOnDoubleClick={false}   // Prevent zooming with double-click
       fitView
     >
     </ReactFlow>

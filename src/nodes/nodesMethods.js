@@ -1,5 +1,5 @@
 import { type } from "@testing-library/user-event/dist/type";
-import { colorDecider, colorTranslator, eyeColorTranslator } from "./nodeColorPicker";
+import { colorDecider, colorTranslator, eyeColorTranslator, filmColorDecider } from "./nodeColorPicker";
 
 const min = 200;
 const max = 350;
@@ -81,23 +81,28 @@ const canvasHeight = 15000; // maximum height of the canvas
             type: 'input',
             sourcePosition: 'right',
             position: {x: 10, y: 0},
-            data: { id: character.url, films: character.films, starships: character.starships, strokeColor: TextColor, label: character.name, pressed: false },
+            data: { id: character.url, films: character.films, starships: character.starships, strokeColor: TextColor, label: character.name, pressed: true },
             style: nodeStyle,
         });
     };
 
 
-    export const createNodesFromFilms = (characterNode, films) => {
+    export const createNodesFromFilms = (characterNode, film, size, index) => {
         // randomised distance between character and his films. Purely visual
-        const arraySize = films.length;
-        return films.map((film, index) => ({ 
-            
+        let Color = filmColorDecider(film.episode_id);
+        console.log("Film: " + film.episode_id)
+        console.log("Color: " + Color);
+        let nodeStyle = glowingNodeStyle(Color, Color)
+        
+        return ({ 
             id: film.url, 
             sourcePosition: 'right',
             targetPosition: 'left',
-            position: { x: characterNode.position.x + Math.floor(Math.random() * (max - min + 1)) + min, y: characterNode.position.y - arraySize * 40 + index * 140 }, 
-            data: { starships: film.starships, label: film.title, pressed: false }, 
-        }));
+            type: 'default',
+            position: { x: characterNode.position.x + Math.floor(Math.random() * (max - min + 1)) + min, y: characterNode.position.y - size * 40 + index * 140 }, 
+            data: { starships: film.starships, label: film.title, pressed: false, strokeColor: Color },
+            style: nodeStyle,
+        });
     };
 
 
@@ -114,9 +119,12 @@ const canvasHeight = 15000; // maximum height of the canvas
             id:  filmNode.id + "-" + starship.url, 
             targetPosition: 'left',
             type: 'output',
-            position: { x: filmNode.position.x + 300,  y: filmNode.position.y - arraySize * 20 + index * 80 }, 
+            position: { x: filmNode.position.x + getRandom(158, 300),  y: filmNode.position.y - arraySize * getRandom(5, 20) + index * 80 }, 
             data: { label: starship.name }, 
         }));
     };
 
+    function getRandom(min, max) {
+        return Math.random() * (max - min) + min;
+    }
 export default { createNodeFromCharacter, createNodesFromFilms, createNodesFromStarships };

@@ -1,4 +1,4 @@
-export const createEdgesFromOneToMany = (source, targets, color, animated) => {
+export const createEdgesFromOneToMany = (source, targets, animated) => {
     const edges = [];
     if(targets != []) {
     targets.forEach( target => {
@@ -7,7 +7,7 @@ export const createEdgesFromOneToMany = (source, targets, color, animated) => {
             source: source.id,
             target: target.id,
             animated: animated,
-            style: {stroke: color}
+            style: {stroke: source.data.strokeColor}
           });
     });
 }

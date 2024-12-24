@@ -1,10 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 
-const Stars = ({ Loading, Class, Weight, Size, paralaxSpeed, SetId, IgnoreScroll }) => {
+const Stars = ({ Loading, Class, Weight, Size, paralaxSpeed, SetId, IgnoreScroll, ReactFlow }) => {
   let starsContainer = useRef(null); // Reference to the stars container
   let stars = new Set();  // Store star positions and colors
   let visibleStars = new Set();
-  let lowestStarLocation = 0 // due to infinite scroll - I need to generate new set of stars downwards from lowest star, avoiding double "staring" area. 
   let screenBuffer = 50;
 
   useEffect(() => {
@@ -70,9 +69,12 @@ const Stars = ({ Loading, Class, Weight, Size, paralaxSpeed, SetId, IgnoreScroll
 
 function generateStars(pageWidth) {
   if(!Loading) {
-    let Amount = Math.min(Weight * window.innerWidth * window.innerHeight, 500);
-    //console.log(Amount)
-    console.log(window.innerHeight);
+    let ScreenRatio = window.innerHeight / window.innerWidth;
+    let Amount;
+    Amount = ReactFlow || ScreenRatio < 0.6 ? Weight * (document.documentElement.scrollHeight / document.documentElement.scrollWidth) :  Weight * 10; // preventing stars overflow if window is too horizontal
+    //console.log("Ratio: " + document.documentElement.scrollHeight / document.documentElement.scrollWidth)
+    console.log("Ratio: " + ScreenRatio); 
+    //console.log(window.innerHeight);
     // clear any existing stars
     stars = new Set();
     visibleStars = new Set();
@@ -103,16 +105,17 @@ function initializeVisibleStars() {
         visibleStars.add(star);
       }
     });
-
+    var scaledSize = Size * (window.innerHeight / 1000);
+    console.log("Amount of stars on screen: " + visibleStars.size)
     visibleStars.forEach((star) => {
       const Star = document.createElement('div');
       Star.classList.add('star');
       Star.style.top = `${star.top}px`;
       Star.style.left = `${star.left}px`;
-      Star.style.width = `${Size}px`;
-      Star.style.height = `${Size}px`;
+      Star.style.width = `${scaledSize}px`;
+      Star.style.height = `${scaledSize}px`;
       Star.style.backgroundColor = `${star.color}`;
-      Star.style.boxShadow = `0px 0px 90px 17px ${star.color}`;
+      Star.style.boxShadow = `0px 0px 90px 19px ${star.color}`;
       Star.style.borderRadius = `0px`;
       Star.style.animationDelay = `${Math.random() * 5}s`;
       Star.style.animationDuration = `${Math.random() * 5}s`;
@@ -144,6 +147,8 @@ function updateVisibleStars(paralax) {
       }
     }
   });
+
+  var scaledSize = Size * (window.innerHeight / 1000);
   currentVisibleStars.forEach((star) => {
     if (!visibleStars.has(star))
     {
@@ -151,10 +156,10 @@ function updateVisibleStars(paralax) {
       Star.classList.add('star');
       Star.style.top = `${star.top}px`;
       Star.style.left = `${star.left}px`;
-      Star.style.width = `${Size}px`;
-      Star.style.height = `${Size}px`;
+      Star.style.width = `${scaledSize}px`;
+      Star.style.height = `${scaledSize}px`;
       Star.style.backgroundColor = `${star.color}`;
-      Star.style.boxShadow = `0px 0px 90px 17px ${star.color}`;
+      Star.style.boxShadow = `0px 0px 90px 19px ${star.color}`;
       Star.style.borderRadius = `0px`;
       Star.style.animationDelay = `${Math.random() * 5}s`;
       Star.style.animationDuration = `${Math.random() * 5}s`;

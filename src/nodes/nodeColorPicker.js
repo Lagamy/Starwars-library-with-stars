@@ -55,4 +55,23 @@ const eyeColorTranslator = (color) =>
     }
 }
 
-export{colorDecider, colorTranslator, eyeColorTranslator}
+const filmColorDecider = (episode_id) =>
+{
+    switch(episode_id)
+    {
+        case 1: 
+            return '#ffff00';
+        case 2: 
+            return '#9b00d9';
+        case 3:
+            return '#ff6600';
+        case 4: 
+            return '#00d0ff';
+        case 5: 
+            return '#ff3333';
+        case 6: 
+            return '#00ff00';
+        
+    }
+}
+export{colorDecider, colorTranslator, eyeColorTranslator, filmColorDecider}
