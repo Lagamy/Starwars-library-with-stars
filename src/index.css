@@ -97,13 +97,13 @@ a {
 
 .react-flow__node
 {
-  background-color: transparent !important;
+  background-color: black !important;
   color: white !important;
   border-color: white  !important;
 }
 
 .react-flow__node-input, .react-flow__node-default{
-  background-color: transparent !important;
+  background-color: black !important;
   color: white !important;
   border-color: white  !important;
   border-width: 0.1px !important;
@@ -113,7 +113,7 @@ a {
 
 .react-flow__handle 
 {
-  background: var(--border-color) !important;
+  background: var(--handle-color) !important;
 }
 
 .card {

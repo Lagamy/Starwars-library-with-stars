@@ -13,6 +13,7 @@ const canvasHeight = 15000; // maximum height of the canvas
         return {
             '--text-color': TextColor,
             '--border-color': BorderColor,
+            '--handle-color': BorderColor
         };
     }
 
@@ -112,6 +113,7 @@ const canvasHeight = 15000; // maximum height of the canvas
         const arraySize = filteredStarships.length;
         if(arraySize == 0)
         {
+            filmNode.style = { '--handle-color':  'black'};
             filmNode.type = 'output'
             return [];
         }
@@ -121,6 +123,7 @@ const canvasHeight = 15000; // maximum height of the canvas
             type: 'output',
             position: { x: filmNode.position.x + getRandom(158, 300),  y: filmNode.position.y - arraySize * getRandom(5, 20) + index * 80 }, 
             data: { label: starship.name }, 
+            style: { '--handle-color':  'black' }
         }));
     };
 
