@@ -40,7 +40,7 @@ const Stars = ({ Loading, Class, Weight, Size, paralaxSpeed, SetId, IgnoreScroll
     // wait till card pictures are loaded
     const timeoutId = setTimeout(() => {
       generateStars(document.documentElement.scrollWidth);
-    }, 500);
+    }, 10);
 
     return () => clearTimeout(timeoutId);
   }, [Loading]);
