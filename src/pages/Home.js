@@ -7,6 +7,7 @@ import { fetchAPI } from "../api/fetchAPI";
 import Character from "../pages/Character";
 import "reactflow/dist/style.css";
 import { Link } from 'react-router-dom';
+import { WebsiteName } from '../constants';
 
 export default function Home() {
   const [characters, setCharacters] = useState([]);
@@ -60,6 +61,16 @@ function slugifyWithAccents(name) {
     .replace(/^-+|-+$/g, '');
 }
 
+
+function extractIdFromUrl(url) {
+  // Regex to extract the number from the URL
+  const match = url.match(/\/(\d+)(\.|$)/);
+  if (match) {
+      return match[1]; // Convert the matched string to an integer.[1] - gave me first matched group. 10 - converts  string to decimal(so if it returns 014 for some reason)
+  }
+  return null; // Return null if no number is found
+}
+
 if (loading) return <div>Loading...</div>;
 if (error) return <div>Error: {error}</div>;
 
@@ -73,9 +84,9 @@ return (
 </div>
 <div className="cards">
   {characters.map((character, index) => (
-    <Link to={{ pathname: `/${index + 1}`,}}>
+    <Link to={{ pathname: `${extractIdFromUrl(character.url)}`,}}>
     <Card key={index + 1}>
-      <div className="Character-img" style={{ backgroundImage: `url('assets/characters/${index + 1}.jpg')` }}/>
+      <div className="Character-img" style={{ backgroundImage: `url('${process.env.PUBLIC_URL}/assets/characters/${index + 1}.jpg')` }}/>
       {/* <Card.Img variant="top" src={`https://starwars-visualguide.com/assets/img/characters/${character.id}.jpg`} alt={character.name} /> */}
       <Card.Body>
         <Card.Title>{character.name}</Card.Title>

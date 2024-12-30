@@ -1,1 +1,0 @@
-export const DatabaseUrl = 'https://swapi-node.now.sh';

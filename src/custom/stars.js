@@ -178,9 +178,9 @@ function contains(array, id) {
 function colorPicker() {
     const randNum = Math.floor(Math.random() * 3) + 1; // random integer between 1 and 3
     switch (randNum) {
-        case 1: return 'white';
-        case 2: return 'yellow';
-        case 3: return 'cyan';
+        case 1: return 'yellow';
+        case 2: return 'cyan';
+        default: return 'white';
     }
 };
 
