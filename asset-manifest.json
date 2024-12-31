@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/Starwars-library-with-stars/static/css/main.20724d57.css",
-    "main.js": "/Starwars-library-with-stars/static/js/main.0499f1a9.js",
-    "static/js/453.683a24ed.chunk.js": "/Starwars-library-with-stars/static/js/453.683a24ed.chunk.js",
+    "main.js": "/Starwars-library-with-stars/static/js/main.fb29e9e6.js",
+    "static/js/453.35a9d1d5.chunk.js": "/Starwars-library-with-stars/static/js/453.35a9d1d5.chunk.js",
     "index.html": "/Starwars-library-with-stars/index.html",
     "main.20724d57.css.map": "/Starwars-library-with-stars/static/css/main.20724d57.css.map",
-    "main.0499f1a9.js.map": "/Starwars-library-with-stars/static/js/main.0499f1a9.js.map",
-    "453.683a24ed.chunk.js.map": "/Starwars-library-with-stars/static/js/453.683a24ed.chunk.js.map"
+    "main.fb29e9e6.js.map": "/Starwars-library-with-stars/static/js/main.fb29e9e6.js.map",
+    "453.35a9d1d5.chunk.js.map": "/Starwars-library-with-stars/static/js/453.35a9d1d5.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.20724d57.css",
-    "static/js/main.0499f1a9.js"
+    "static/js/main.fb29e9e6.js"
   ]
 }
