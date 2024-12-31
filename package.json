@@ -1,6 +1,6 @@
 {
   "homepage": "http://lagamy.github.io/Starwars-library-with-stars",
-  "name": "starwars-library",
+  "name": "starwars-library-with-stars",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
