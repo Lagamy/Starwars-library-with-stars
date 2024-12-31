@@ -1,1 +1,1 @@
-export const WebsiteName = 'starwars-library';
+export const WebsiteName = 'Starwars-library-with-stars';
