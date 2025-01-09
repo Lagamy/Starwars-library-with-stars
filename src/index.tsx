@@ -5,11 +5,18 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter as Router} from 'react-router-dom';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const rootElement = document.getElementById('root');
+
+// Ensure `rootElement` is not null
+if (!rootElement) {
+  throw new Error("Root element not found. Ensure there is a div with id 'root' in your HTML.");
+}
+
+const root = ReactDOM.createRoot(rootElement);
 root.render(
 
   <Router>
-      <App />
+      <App/>
   </Router>
 );
 
