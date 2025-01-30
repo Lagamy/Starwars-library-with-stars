@@ -1,43 +1,29 @@
-import { useParams } from 'react-router-dom';
+import { useLocation  } from 'react-router-dom';
 import React, { useState, useEffect, useCallback} from 'react';
-import { Background, Controls, ReactFlow, addEdge, useNodesState, useEdgesState, MiniMap} from "reactflow";
-import { fetchDataRelatedToCharacter } from '../api/fetchAPI';
-import { createNodeFromCharacter, createNodesFromFilms, createNodesFromStarships} from "../nodes/nodesMethods";
+import { Node, Edge, Connection, ReactFlow, addEdge, useNodesState, useEdgesState} from "reactflow";
+import { fetchFilmsRelatedToCharacter, fetchStarshipsRelatedToCharacter } from '../api/fetchAPI';
+import { createNodeFromCharacter, createNodeFromFilms, createNodesFromStarships} from "../nodes/nodesMethods";
 import { createEdgesFromOneToMany } from "../edges/edgesMethods";
+import {CharacterType, StarshipType, FilmType} from "../types";
 import Stars from '../custom/stars';
 
 export default function Character() {
 
-const { characterId } = useParams();
-const [films, setFilms] = useState([]);   
-const [starships, setStarships] = useState([]);  
-const [character, setCharacter] = useState(null);
+const location = useLocation();
+const { character } = location.state as { character: CharacterType };
+const [films, setFilms] = useState<FilmType[]>([]);
+const [starships, setStarships] = useState<StarshipType[]>([]);
 const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-const [nodes, setNodes, onNodesChange] = useNodesState([]);
-const [edges, setEdges, onEdgesChange] = useEdgesState([]);
-
-useEffect(() => {
-  async function fetchCharacter() {
-    try {
-      const response = await fetch(`https://swapi.info/api/people/${characterId}`);
-      const data = await response.json();
-      setCharacter(data);
-    } catch (error) {
-      setError('Error fetching character:', error);
-    }
-  }
-
-  fetchCharacter();
-}, [characterId]);
-
+const [error, setError] =  useState<string | null>(null);
+const [nodes, setNodes, onNodesChange] = useNodesState<Node[]>([]);
+const [edges, setEdges, onEdgesChange] = useEdgesState<Edge[]>([]);
 
 useEffect(() => {
   const fetchAllData = async () => {
     if (character != null) {
       try {
-        await fetchDataRelatedToCharacter(setFilms, setError, character.films);
-        await fetchDataRelatedToCharacter(setStarships, setError, character.starships);
+        await fetchFilmsRelatedToCharacter(setFilms, setError, character.films);
+        await fetchStarshipsRelatedToCharacter(setStarships, setError, character.starships);
       } catch (error) {
         console.error("Error fetching data: ", error);
       } finally {
@@ -45,7 +31,6 @@ useEffect(() => {
       }
     }
   };
-
   fetchAllData();
 }, [character]);
 
@@ -53,22 +38,22 @@ useEffect(() => {
 useEffect(() => {
   
   if(!loading) {
-  let allNodes = [];
+  let allNodes: Node[];
 
   let characterNode = createNodeFromCharacter(character);
 
-  let filmNodes = [];
+  let filmNodes: Node[] = [];
   console.log(films)
   films.forEach((film, index) => {
-    filmNodes = [...filmNodes, createNodesFromFilms(characterNode, film, films.length, index)];
+    filmNodes = [...filmNodes, createNodeFromFilms(characterNode, film, films.length, index)];
   });
 
   let filmEdges = createEdgesFromOneToMany(characterNode, filmNodes, false);
   
   allNodes = [characterNode, ...filmNodes];
 
-  let starshipNodes = [];
-  let starshipEdges = [];
+  let starshipNodes: Node[] = [];
+  let starshipEdges: Edge[] = [];
 
   filmNodes.forEach(filmNode => {
     starshipNodes = createNodesFromStarships(filmNode, starships);
@@ -85,7 +70,7 @@ useEffect(() => {
 }, [loading]);
 
 const onConnect = useCallback(
-    (connection) => setEdges((edges) => addEdge(connection, edges)),
+    (connection: Connection) => setEdges((edges) => addEdge(connection, edges)),
     [setEdges]
   );
 
@@ -96,9 +81,9 @@ if (error) return <div>Error: {error}</div>;
 return (
     // <div></div>
     <div style={{ height: '100vh', width: '100vw'}}>
-    <Stars Loading={loading} Class={"background-stars"} Size={2.5} paralaxSpeed={0.5} Weight={80} SetId={'1'} IgnoreScroll={true} ReactFlow={true}/> 
-    <Stars Loading={loading} Class={"middleground-stars"} Size={3.5} paralaxSpeed={0.3}  Weight={80} SetId={'2'} IgnoreScroll={true} ReactFlow={true}/>
-    <Stars Loading={loading} Class={"foreground-stars"} Size={5.5} paralaxSpeed={0.15} Weight={80} SetId={'3'} IgnoreScroll={true} ReactFlow={true}/>
+    <Stars Class={"background-stars"} Size={2.5} paralaxSpeed={0.5} Weight={80} Id={'1'} IgnoreScroll={true} ReactFlow={true}/> 
+    <Stars Class={"middleground-stars"} Size={3.5} paralaxSpeed={0.3}  Weight={80} Id={'2'} IgnoreScroll={true} ReactFlow={true}/>
+    <Stars Class={"foreground-stars"} Size={5.5} paralaxSpeed={0.15} Weight={80} Id={'3'} IgnoreScroll={true} ReactFlow={true}/>
     <ReactFlow
       nodes={nodes}
       onNodesChange={onNodesChange}

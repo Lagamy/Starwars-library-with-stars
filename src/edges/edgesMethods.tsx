@@ -1,6 +1,8 @@
-export const createEdgesFromOneToMany = (source, targets, animated) => {
-    const edges = [];
-    if(targets != []) {
+import { Edge, Node } from "reactflow";
+
+export const createEdgesFromOneToMany = (source: Node, targets: Node[], animated: boolean): Edge[] => {
+    const edges: Edge[] = [];
+    if(targets.length > 0) {
     
     targets.forEach( target => {
         edges.push({

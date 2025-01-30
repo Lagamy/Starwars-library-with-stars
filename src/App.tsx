@@ -5,7 +5,7 @@ import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home'
 import { WebsiteName } from './constants';
 
-function App(): JSX.Element  {
+function App() {
 return (
 <div>
 <Routes>

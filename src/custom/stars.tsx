@@ -1,10 +1,11 @@
 import React, { useEffect, useRef } from 'react';
+import { StarsBackground, Star } from '../types';
 
-const Stars = ({ Loading, Class, Weight, Size, paralaxSpeed, SetId, IgnoreScroll, ReactFlow }) => {
-  let starsContainer = useRef(null); // Reference to the stars container
-  let stars = new Set();  // Store star positions and colors
-  let visibleStars = new Set();
-  let screenBuffer = 50;
+const Stars: React.FC<StarsBackground> = ({ Loading, Class, Weight, Size, paralaxSpeed, Id, IgnoreScroll, ReactFlow }) => {
+  let starsContainer = useRef<HTMLDivElement | null>(null); // Reference to the stars container
+  let stars: Set<Star> = new Set();  // Store star positions and colors
+  let visibleStars: Set<Star> = new Set();
+  let screenBuffer: number = 50;
 
   useEffect(() => {
 
@@ -21,8 +22,7 @@ const Stars = ({ Loading, Class, Weight, Size, paralaxSpeed, SetId, IgnoreScroll
       //debounceTimeout = setTimeout(() => {
       if(!IgnoreScroll) updateVisibleStars(paralax);
       //}, 100); // Adjust debounce delay as needed (100ms here)
-    
-      starsContainer.current.style.setProperty('--translateY', `${paralax}px`);
+      if(starsContainer.current) starsContainer.current.style.setProperty('--translateY', `${paralax}px`);
     }
 
     window.addEventListener('scroll', handleParalax)
@@ -43,7 +43,7 @@ const Stars = ({ Loading, Class, Weight, Size, paralaxSpeed, SetId, IgnoreScroll
     }, 10);
 
     return () => clearTimeout(timeoutId);
-  }, [Loading]);
+  }, []);
 
   // const generateStars = (pageWidth) => {
   //   if(!Loading) {
@@ -67,7 +67,7 @@ const Stars = ({ Loading, Class, Weight, Size, paralaxSpeed, SetId, IgnoreScroll
   //   }
   // };
 
-function generateStars(pageWidth) {
+function generateStars(pageWidth: number) {
   if(!Loading) {
     let ScreenRatio = window.innerHeight / window.innerWidth;
     let Amount;
@@ -78,15 +78,15 @@ function generateStars(pageWidth) {
     // clear any existing stars
     stars = new Set();
     visibleStars = new Set();
-    starsContainer.current.innerHTML = "";
+    if(starsContainer.current != null) starsContainer.current.innerHTML = "";
     const availableHeight = IgnoreScroll ? window.innerHeight : document.documentElement.scrollHeight;
     let id;
     for (let i = 0; i < Amount; i++) {
       const top = Math.random() * availableHeight;
       const left = Math.random() * pageWidth;
       const color = colorPicker();
-      id = SetId + '.' + i
-      stars.add({ top, left, color, id });
+      id = Id + '.' + i
+      stars.add({ Top: top, Left: left, Color: color, Id: id });
     }
     initializeVisibleStars();
   }
@@ -101,7 +101,7 @@ function initializeVisibleStars() {
 
     // Filter for stars in the viewport
     stars.forEach(star => {
-      if (star.top >= viewportTop - screenBuffer && star.top <= viewportBottom + screenBuffer) {
+      if (star.Top >= viewportTop - screenBuffer && star.Top <= viewportBottom + screenBuffer) {
         visibleStars.add(star);
       }
     });
@@ -110,28 +110,28 @@ function initializeVisibleStars() {
     visibleStars.forEach((star) => {
       const Star = document.createElement('div');
       Star.classList.add('star');
-      Star.style.top = `${star.top}px`;
-      Star.style.left = `${star.left}px`;
+      Star.style.top = `${star.Top}px`;
+      Star.style.left = `${star.Left}px`;
       Star.style.width = `${scaledSize}px`;
       Star.style.height = `${scaledSize}px`;
-      Star.style.backgroundColor = `${star.color}`;
-      Star.style.boxShadow = `0px 0px 90px 19px ${star.color}`;
+      Star.style.backgroundColor = `${star.Color}`;
+      Star.style.boxShadow = `0px 0px 90px 19px ${star.Color}`;
       Star.style.borderRadius = `0px`;
       Star.style.animationDelay = `${Math.random() * 5}s`;
       Star.style.animationDuration = `${Math.random() * 5}s`;
-      Star.dataset.id = star.id;
-      starsContainer.current.appendChild(Star);
+      Star.dataset.id = star.Id;
+      if(starsContainer.current) starsContainer.current.appendChild(Star);
     });
 }
 
-function updateVisibleStars(paralax) {
+function updateVisibleStars(paralax: number) {
   const viewportTop = window.scrollY;
   const viewportBottom = viewportTop + window.innerHeight;
   //console.log(paralax)
-  let currentVisibleStars = new Set();
+  let currentVisibleStars: Set<Star> = new Set();
 
   stars.forEach(star => {
-    if (star.top + paralax >= viewportTop - screenBuffer && star.top - paralax <= viewportBottom + screenBuffer) {
+    if (star.Top + paralax >= viewportTop - screenBuffer && star.Top - paralax <= viewportBottom + screenBuffer) {
         currentVisibleStars.add(star);
     }
   });
@@ -139,7 +139,7 @@ function updateVisibleStars(paralax) {
   visibleStars.forEach((star) => {
     if (!currentVisibleStars.has(star))
     {
-      const starElement = document.querySelector(`[data-id="${star.id}"]`);
+      const starElement = document.querySelector(`[data-id="${star.Id}"]`);
       if (starElement) {
         //console.log(starElement)
         starElement.remove();
@@ -154,24 +154,25 @@ function updateVisibleStars(paralax) {
     {
       const Star = document.createElement('div');
       Star.classList.add('star');
-      Star.style.top = `${star.top}px`;
-      Star.style.left = `${star.left}px`;
+      Star.style.top = `${star.Top}px`;
+      Star.style.left = `${star.Left}px`;
       Star.style.width = `${scaledSize}px`;
       Star.style.height = `${scaledSize}px`;
-      Star.style.backgroundColor = `${star.color}`;
-      Star.style.boxShadow = `0px 0px 90px 19px ${star.color}`;
+      Star.style.backgroundColor = `${star.Color}`;
+      Star.style.boxShadow = `0px 0px 90px 19px ${star.Color}`;
       Star.style.borderRadius = `0px`;
       Star.style.animationDelay = `${Math.random() * 5}s`;
       Star.style.animationDuration = `${Math.random() * 5}s`;
-      Star.dataset.id = star.id; // Store id as data attribute
-      starsContainer.current.appendChild(Star);
+      Star.dataset.id = star.Id; // Store id as data attribute
+
+      if(starsContainer.current) starsContainer.current.appendChild(Star);
     }
   });
   visibleStars = currentVisibleStars;
 }
 
-function contains(array, id) {
-  return array.some((star) => star.id === id)
+function contains(array: Star[], id: string) {
+  return array.some((star) => star.Id === id)
 }
 
 

@@ -1,6 +1,6 @@
 const commonSkinColors = ['fair', 'tan', 'pale'] // if skin color is not unique character trait(Like with Yoda and Darth Maul) - than use hair color for node border  
 
-const colorDecider = (skinColor, hairColor) =>
+const colorDecider = (skinColor: string, hairColor: string) =>
 {
     // if skin color is unique or hair color is unknown - use skin color for borders
     if((!commonSkinColors.includes(skinColor) && skinColor != 'unknown') || (hairColor == "n/a" || hairColor == "none" ))
@@ -13,14 +13,16 @@ const colorDecider = (skinColor, hairColor) =>
     }
 }
 
-const colorTranslator = (color) => 
+const colorTranslator = (color: string) => 
 {
     let Color = color.split(",")[0];
     switch(Color)
     {
         case 'blond':
             return '#F1CC8F';
-        case 'fair', 'pale', 'light': 
+        case 'fair': // array set for multiple cases
+        case 'pale' :
+        case 'light': 
             return '#EDDDD1';
         case 'tan':
             return '#D2B48C';
@@ -40,7 +42,7 @@ const colorTranslator = (color) =>
 }
 
 
-const eyeColorTranslator = (color) => 
+const eyeColorTranslator = (color: string) => 
 {
     switch(color)
     {
@@ -55,7 +57,7 @@ const eyeColorTranslator = (color) =>
     }
 }
 
-const filmColorDecider = (episode_id) =>
+const filmColorDecider = (episode_id: number) =>
 {
     switch(episode_id)
     {
@@ -71,7 +73,8 @@ const filmColorDecider = (episode_id) =>
             return '#ff3333';
         case 6: 
             return '#00ff00';
-        
+        default: 
+            return '#fffff';
     }
 }
 export{colorDecider, colorTranslator, eyeColorTranslator, filmColorDecider}
