@@ -1,16 +1,7 @@
 import React, { useEffect, useRef } from 'react';
-import { Star } from '../types';
+import { StarsBackground, Star } from '../types';
 
-export default function Stars (
-  { Class, Weight, Size, paralaxSpeed, Id, IgnoreScroll, ReactFlow } : {
-    Class: string,
-    Weight: number, 
-    Size: number, 
-    paralaxSpeed: number,
-    Id: string, 
-    IgnoreScroll: boolean, 
-    ReactFlow: boolean
-}){
+export default function Stars ({ Class, Weight, Size, paralaxSpeed, Id, IgnoreScroll, ReactFlow } : StarsBackground){
   let starsContainer = useRef<HTMLDivElement | null>(null); // Reference to the stars container
   let stars: Set<Star> = new Set();  // Store star positions and colors
   let visibleStars: Set<Star> = new Set();
