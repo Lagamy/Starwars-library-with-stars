@@ -1,7 +1,16 @@
 import React, { useEffect, useRef } from 'react';
-import { StarsBackground, Star } from '../types';
+import { Star } from '../types';
 
-const Stars: React.FC<StarsBackground> = ({ Loading, Class, Weight, Size, paralaxSpeed, Id, IgnoreScroll, ReactFlow }) => {
+export default function Stars (
+  { Class, Weight, Size, paralaxSpeed, Id, IgnoreScroll, ReactFlow } : {
+    Class: string,
+    Weight: number, 
+    Size: number, 
+    paralaxSpeed: number,
+    Id: string, 
+    IgnoreScroll: boolean, 
+    ReactFlow: boolean
+}){
   let starsContainer = useRef<HTMLDivElement | null>(null); // Reference to the stars container
   let stars: Set<Star> = new Set();  // Store star positions and colors
   let visibleStars: Set<Star> = new Set();
@@ -68,7 +77,6 @@ const Stars: React.FC<StarsBackground> = ({ Loading, Class, Weight, Size, parala
   // };
 
 function generateStars(pageWidth: number) {
-  if(!Loading) {
     let ScreenRatio = window.innerHeight / window.innerWidth;
     let Amount;
     Amount = ReactFlow || ScreenRatio < 0.6 ? Weight * (document.documentElement.scrollHeight / document.documentElement.scrollWidth) :  Weight * 10; // preventing stars overflow if window is too horizontal
@@ -89,7 +97,6 @@ function generateStars(pageWidth: number) {
       stars.add({ Top: top, Left: left, Color: color, Id: id });
     }
     initializeVisibleStars();
-  }
 }
 
 
@@ -187,5 +194,3 @@ function colorPicker() {
 
   return <div ref={starsContainer} className={`stars  ${Class}`}></div>;
 };
-
-export default Stars;
