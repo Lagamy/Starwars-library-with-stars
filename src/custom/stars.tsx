@@ -12,6 +12,7 @@ export default function Stars ({ Class, Weight, Size, paralaxSpeed, Id, IgnoreSc
     const handleResize = () => {
       //lowestStarLocation = 0;
       generateStars(document.documentElement.scrollWidth);
+      handleParalax(); // So all stars possition are set correctly
     }
 
     const handleParalax = () =>
