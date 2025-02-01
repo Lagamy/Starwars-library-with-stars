@@ -11,6 +11,7 @@ const Stars = ({ Loading, Class, Weight, Size, paralaxSpeed, SetId, IgnoreScroll
     const handleResize = () => {
       //lowestStarLocation = 0;
       generateStars(document.documentElement.scrollWidth);
+      handleParalax(); // So all stars possition are set correctly
     }
 
     const handleParalax = () =>
