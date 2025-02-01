@@ -1,3 +1,4 @@
+import { CSSProperties } from 'react';
   export type CharacterType = {
     name: string;
     films: string[];
@@ -37,3 +38,5 @@
     Color: string;
     Id: string;
   }
+
+  export type CSSProps = CSSProperties &  Record<string, string> // Allows additional properties that are not built-in. Alternatively instead of Record<string, string> - [key: string]: string can be used here for more manuall declaration.

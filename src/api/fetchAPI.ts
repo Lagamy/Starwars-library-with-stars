@@ -3,21 +3,17 @@ import { CharacterType, FilmType, StarshipType } from "../types";
 
 export const fetchCharactersFromAPI = async (url: string, setData: (data: CharacterType[]) => void, setError: (error: string) => void) => {
   try {
-    let allData: CharacterType[] = []; // Array to accumulate all results
-    let currentUrl = url; // Start with the initial URL
-    while (currentUrl) { // Loop until there's no next page
-      const response = await axios.get(currentUrl);
-      allData.push({
-        name: response.data.name,
-        films: response.data.films,
-        starships: response.data.starships,
-        skin_color: response.data.skin_color,
-        hair_color: response.data.hair_color,
-        eye_color: response.data.eye_color,
-        url: response.data.url
-      })
-      currentUrl = response.data.next; // Get the next URL if it exists
-    }
+    const response = await axios.get(url);
+    const allData = response.data.map((character: CharacterType) => ({ // Array to accumulate all results 
+      name: character.name,
+      films: character.films,
+      starships: character.starships,
+      skin_color: character.skin_color,
+      hair_color: character.hair_color,
+      eye_color: character.eye_color,
+      url: character.url
+    }));
+    
     //console.log(allData);
     setData(allData); // Set data only once after all fetches are complete
   } catch (err) {

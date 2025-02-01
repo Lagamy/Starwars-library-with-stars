@@ -1,13 +1,10 @@
-import { Background, Controls, ReactFlow, addEdge, useNodesState, useEdgesState, MiniMap} from "reactflow";
 import React, { useState, useEffect, useCallback} from 'react';
 import Card from 'react-bootstrap/Card';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Stars from "../custom/stars";
 import { fetchCharactersFromAPI } from "../api/fetchAPI";
-import Character from "./Character";
 import "reactflow/dist/style.css";
-import { Link } from 'react-router-dom';
-import { WebsiteName } from '../constants';
+import { useNavigate } from 'react-router-dom';
 import { CharacterType } from "../types";
 
 
@@ -74,6 +71,11 @@ function extractIdFromUrl(url: string) {
   }
   return null; // Return null if no number is found
 }
+const navigate = useNavigate();
+
+const handleNavigate = (characterData: CharacterType) => (event: React.MouseEvent<HTMLButtonElement>) => { // Higher order function(function that returns another function), I use it to pass  argument to an event handler
+  navigate(`${extractIdFromUrl(characterData.url)}`, { state: { character: characterData } });
+};
 
 if (loading) return <div>Loading...</div>;
 if (error) return <div>Error: {error}</div>;
@@ -88,12 +90,8 @@ return (
 </div>
 <div className="cards">
   {characters.map((characterData, index) => (
-    <Link
-    to={{
-      pathname: `/character/${characterData.name}`, // Example path
-      state: { character: characterData }, // Pass state
-    }as any} // To fix state property being unknown 
-  >
+    
+    <button onClick={handleNavigate(characterData)} style={{background: "none", border: "none"}}>
     <Card key={index + 1}>
       <div className="Character-img" style={{ backgroundImage: `url('${process.env.PUBLIC_URL}/assets/characters/${index + 1}.jpg')` }}/>
       {/* <Card.Img variant="top" src={`https://starwars-visualguide.com/assets/img/characters/${character.id}.jpg`} alt={character.name} /> */}
@@ -103,7 +101,7 @@ return (
         </Card.Text>
       </Card.Body>
     </Card>
-    </Link>
+    </button>
   ))}
 </div>
 </div>

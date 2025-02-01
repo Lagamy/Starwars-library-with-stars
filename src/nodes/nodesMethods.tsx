@@ -1,8 +1,8 @@
 import { type } from "@testing-library/user-event/dist/type";
 import { colorDecider, colorTranslator, eyeColorTranslator, filmColorDecider } from "./nodeColorPicker";
-import { CharacterType, FilmType, StarshipType } from "../types";
+import { CharacterType, FilmType, StarshipType, CSSProps } from "../types";
 import { Node, Position } from "reactflow";
-import { CSSProperties } from 'react';
+
 const min = 200;
 const max = 350;
 const groupNodeSize = { width: 800, height: 1200 }; // group node size
@@ -10,7 +10,7 @@ const padding = 50; // minimum space between nodes to avoid overlap and make it 
 const canvasWidth = 15000; // maximum width of the canvas
 const canvasHeight = 15000; // maximum height of the canvas
 
-    const glowingNodeStyle = (BorderColor: string, TextColor: string): CSSProperties & { [key: string]: string } => //: CSSProperties { [key: string]: string } allows additional properties
+    const glowingNodeStyle = (BorderColor: string, TextColor: string): CSSProps => //: CSSProperties { [key: string]: string } allows additional properties
     {
         return {
             '--text-color': TextColor,
@@ -62,10 +62,8 @@ const canvasHeight = 15000; // maximum height of the canvas
         const arraySize = filteredStarships.length;
         if(arraySize == 0)
         {
-            filmNode.style = { 
-                '--handle-color':  'black'
-            } as CSSProperties & { [key: string]: string }; 
-            filmNode.type = 'output'
+            filmNode.style = { '--handle-color':  'black'} as CSSProps;
+            filmNode.type = 'output';
             return [];
         }
         return filteredStarships.map((starship: StarshipType, index: number) => ({ 
@@ -74,7 +72,7 @@ const canvasHeight = 15000; // maximum height of the canvas
             type: 'output',
             position: { x: filmNode.position.x + getRandom(158, 300),  y: filmNode.position.y - arraySize * getRandom(5, 20) + index * 80 }, 
             data: { label: starship.name }, 
-            style: { '--handle-color':  'black' } as CSSProperties & { [key: string]: string }
+            style: { '--handle-color':  'black' } as CSSProps
         }));
     };
 
