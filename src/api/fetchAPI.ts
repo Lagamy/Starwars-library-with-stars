@@ -4,6 +4,7 @@ import { CharacterType, FilmType, StarshipType } from "../types";
 export const fetchCharactersFromAPI = async (url: string, setData: (data: CharacterType[]) => void, setError: (error: string) => void) => {
   try {
     const response = await axios.get(url);
+
     const allData = response.data.map((character: CharacterType) => ({ // Array to accumulate all results 
       name: character.name,
       films: character.films,
@@ -14,7 +15,8 @@ export const fetchCharactersFromAPI = async (url: string, setData: (data: Charac
       url: character.url
     }));
     
-    //console.log(allData);
+    //const allData = response.data as CharacterType[]; // Less type safe, but more simple variant  
+
     setData(allData); // Set data only once after all fetches are complete
   } catch (err) {
     setError((err as Error).message);  // Set error message
