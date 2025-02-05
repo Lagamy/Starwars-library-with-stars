@@ -20,10 +20,10 @@ export default function Home() {
   try {
     setLoading(true); // Start loading
     await fetchCharactersFromAPI('https://swapi.info/api/people', setCharacters, setError);
-    setLoading(false); // Set loading to false once all data is fetched
-  } catch (err: any) {
-    setError(err);
-    setLoading(false);
+  } catch (error) {
+    console.error("Error fetching data: ", error);
+  } finally {
+    setLoading(false);// Set loading to false once all data is fetched / failed to fetch
   }
 };
 
