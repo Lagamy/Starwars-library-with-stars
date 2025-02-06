@@ -24,8 +24,12 @@ useEffect(() => {
       try {
         await fetchFilmsRelatedToCharacter(setFilms, setError, character.films);
         await fetchStarshipsRelatedToCharacter(setStarships, setError, character.starships);
-      } catch (error) {
-        console.error("Error fetching data: ", error);
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError("An unknown error occurred");
+        }
       } finally {
         setLoading(false); // Set loading to false only after all async calls finish
       }

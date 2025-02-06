@@ -16,20 +16,25 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
 
  // Function to fetch all data at once
- const fetchCharacters = async () => {
-  try {
-    setLoading(true); // Start loading
-    await fetchCharactersFromAPI('https://swapi.info/api/people', setCharacters, setError);
-  } catch (error) {
-    console.error("Error fetching data: ", error);
-  } finally {
-    setLoading(false);// Set loading to false once all data is fetched / failed to fetch
-  }
-};
+
 
 useEffect(() => {
-  fetchCharacters();
+  const fetchCharacters = async () => {
+    try {
+      setLoading(true); // Start loading
+      await fetchCharactersFromAPI('https://swapi.info/api/people', setCharacters, setError);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("An unknown error occurred");
+      }
+    } finally {
+      setLoading(false);// Set loading to false once all data is fetched / failed to fetch
+    }
+  };
 
+  fetchCharacters()
   function handleResize() {
     setBackgroundSize();
   }
